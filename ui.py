@@ -2,8 +2,29 @@
 
 from os import get_terminal_size
 from time import sleep
+from json import load
 
-version = '0.0.2.1'
+version = '0.0.2.4'
+
+def helps(*args):
+    # Принимает два параметра: строку для вывода и задержку времени показа сообщения в секундах
+    print(args[0])
+    sleep(args[1]) if len(args) > 1 else input()
+    return False
+
+def get_dict_from_json(file, key):
+    # Функция принимает имя json-файла и ключ, который нужно экспориторовать
+    # Возвращает ассоциативный массив из данных по переданному ключу
+    with open(file) as f:
+        templates = load(f)
+    return dict(tuple(templates[key]))
+
+def get_list_from_json(file, key):
+    # Функция принимает имя json-файла и ключ, который нужно экспориторовать
+    # Возвращает список из данных по переданному ключу
+    with open(file) as f:
+        templates = load(f)
+    return tuple(templates[key])
 
 def line(): print('-' * get_terminal_size()[0])
 
@@ -66,8 +87,6 @@ def print_as_table(items, sep):
         else:
             print('%s' % (sep * sep_len,))
 
-
-
 def header(text):
     # takes a string and transform it to list of tuples with single element
     # print a string in center of screen
@@ -105,23 +124,6 @@ def screen(header_title, func, menu_lst, menu_cols):
     header(header_title)
     func()
     menu(menu_lst, menu_cols)
-
-
-messages = {
-    'not_impl': 'Not implemented yet',
-    'ua': 'Unsupported action',
-    'small_str': 'Too small string',
-    'need_gender': 'A gender designation is required: [mM or fF]',
-    'need_number': 'A number is required',
-    'not_in_list': 'User with this number not in list',
-    }
-
-def show_help(*args):
-    print(messages[args[0]])
-    if len(args) > 1:
-        sleep(args[1])
-    else:
-        empty_input = input()
 
 class Completer():
     def __init__(self, options):
