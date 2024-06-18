@@ -12,19 +12,16 @@ def helps(text, delay=0):
     sleep(delay) if delay != 0 else input()
     return False
 
-def get_dict_from_json(file, key):
-    # Функция принимает имя json-файла и ключ, который нужно экспориторовать
-    # Возвращает ассоциативный массив из данных по переданному ключу
-    with open(file) as f:
-        templates = load(f)
-    return dict(tuple(templates[key]))
-
-def get_list_from_json(file, key):
-    # Функция принимает имя json-файла и ключ, который нужно экспориторовать
-    # Возвращает список из данных по переданному ключу
-    with open(file) as f:
-        templates = load(f)
-    return tuple(templates[key])
+def get_from_json(file, mode, *keys):
+    # Функция принимает имя json-файла, режим работы и ключи для экспортирования
+    # Возвращает список словарей или список кортежей
+    l = list()
+    with open(file) as f: templates = load(f)
+    for k in keys:
+        t = tuple(templates[k])
+        if mode == 'dicts': t = dict(t)
+        l.append(t)
+    return l
 
 def line(): print('-' * get_terminal_size()[0])
 
